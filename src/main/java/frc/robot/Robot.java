@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -20,6 +13,9 @@ import edu.wpi.first.wpilibj.Joystick;
 
 //camera
 import edu.wpi.first.cameraserver.CameraServer;
+
+//launcher
+import frc.robot.Systems.Launcher;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -134,6 +130,8 @@ public class Robot extends TimedRobot {
     rDrive0.set((y+x)*motorThrottle);
     lDrive0.set(-(y-x)*motorThrottle);
 
+    //LAUNCHER IN THEORY SHOULD WORKETH IF THE LORD WILLS IT
+    Launcher.startLauncher();
   }
 
   /**
