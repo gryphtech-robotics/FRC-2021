@@ -1,3 +1,7 @@
+/**
+ * Copyright 2020 Gryphtech Robotics
+ */
+
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -98,7 +102,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
+    // vam_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
   }
 
