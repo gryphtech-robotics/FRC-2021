@@ -7,6 +7,19 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 
 public class Launcher {
+    public static CANSparkMax leftThruster;
+    public static CANSparkMax rightThruster;
+    public static CANSparkMax leftSideWheel;
+    public static CANSparkMax rightSideWheel;
+
+    public static void wheelsInit () {
+        //WE NEED TO FILL THIS IN WITH OUR MOTORS
+        leftThruster = new CANSparkMax(6, MotorType.kBrushless);
+        rightThruster = new CANSparkMax(7, MotorType.kBrushless);
+        //WE REALLY NEED TO CHANGE THESE MOTORS TOO
+        leftSideWheel = new CANSparkMax(8, MotorType.kBrushless);
+        rightSideWheel = new CANSparkMax(9, MotorType.kBrushless);
+    }
     public static void startLauncher () {
         try {
             startThrusterWheels();
@@ -19,28 +32,22 @@ public class Launcher {
     }
 
     public static void startThrusterWheels () {
-        //WE NEED TO FILL THIS IN WITH OUR MOTORS
-        CANSparkMax left = new CANSparkMax(6, MotorType.kBrushless);
-        CANSparkMax right = new CANSparkMax(7, MotorType.kBrushless);
 
-        left.follow(right);
+        leftThruster.follow(rightThruster);
         
-        right.set(1);
+        rightThruster.set(1);
 
-        left.close();
-        right.close();
+        leftThruster.close();
+        rightThruster.close();
     }
 
     public static void startSideWheels () {
-        //WE REALLY NEED TO CHANGE THESE MOTORS TOO
-        CANSparkMax left = new CANSparkMax(8, MotorType.kBrushless);
-        CANSparkMax right = new CANSparkMax(9, MotorType.kBrushless);
 
-        left.follow(right);
+        leftSideWheel.follow(rightSideWheel);
         
-        right.set(1);
+        rightSideWheel.set(1);
 
-        left.close();
-        right.close();
+        leftSideWheel.close();
+        rightSideWheel.close();
     }
 }
