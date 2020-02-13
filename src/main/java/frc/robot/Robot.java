@@ -99,7 +99,7 @@ public class Robot extends TimedRobot {
     Drive.zoom(driverController);
 
     //LAUNCHER IN THEORY SHOULD WORKETH IF THE LORD WILLS IT :PRAYING HANDS EMOGY:
-    if (button is pressed haha add me later) {
+    if (driverController.getRawButton(port)) {
       Lungs.inhale();
     }    
     if (button is pressed haha add me later) {
