@@ -37,10 +37,10 @@ public class Limelight {
    }
 
    public static double math () {
-        double cameraHeight = 420; // Funny weed number!! :LAUGHING FACE EMOGY:  BLAME AXEL FOR THIS JOKE
+        double cameraHeight = 421; 
         double targetHeight = 36;
     
-        double mountAngle = 420; // Funny weed number!! :LAUGHING FACE EMOGY: BLAME AXEL FOR THIS WEEK
+        double mountAngle = 421; 
 
         double distance = (targetHeight - cameraHeight) / Math.tan(Math.toRadians(mountAngle) - Math.toRadians(limeY));
 

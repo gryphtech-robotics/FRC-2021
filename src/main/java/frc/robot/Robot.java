@@ -25,10 +25,10 @@ import frc.robot.Systems.Launcher;
 import frc.robot.Systems.Limelight;
 
 //drive!
-import frc.robot.Systems.Drive;
+import frc.robot.Systems.Drivetrain;
 
-//intake / lungs
-import frc.robot.Systems.Lungs;
+//intake
+import frc.robot.Systems.Intake;
 
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
@@ -47,6 +47,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    System.out.println("I happen to exist -");
+    System.out.println(("Cogito, ergo, sum"));
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
@@ -55,10 +57,10 @@ public class Robot extends TimedRobot {
     Launcher.wheelsInit();
 
     //Intake
-    Lungs.extendlungs();
+    Intake.initIntake();
     
     //motor control
-    Drive.rev();
+    Drivetrain.init();
 
     //Driver control
     driverController = new Joystick(0);
@@ -81,28 +83,19 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
+  
     }
   }
 
   @Override
   public void teleopPeriodic() {
 
-    //DRIVe CODE :DASH AWAY EMOGY:
-    Drive.zoom(driverController);
+    Drivetrain.drive(driverController);
 
-    //LAUNCHER IN THEORY SHOULD WORKETH IF THE LORD WILLS IT :PRAYING HANDS EMOGY:
-    if (button is pressed haha add me later) {
-      Lungs.inhale();
+    if (driverController.getRawButton(#)) {
+      Intake.in();
     }    
-    if (button is pressed haha add me later) {
+    if (driverController.getRawButton(#) {
       Launcher.startLauncher();
     }
     Limelight.periodic();

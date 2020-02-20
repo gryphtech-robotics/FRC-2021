@@ -7,16 +7,13 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 //joystick
 import edu.wpi.first.wpilibj.Joystick;
 
-public class Drive {
+public class Driverain {
     public static CANSparkMax lDrive0;
     public static CANSparkMax rDrive0;
     public static CANSparkMax lDrive1;
     public static CANSparkMax rDrive1;
-
-    /**
-     * skrt skrt
-     */
-    public static void rev () {
+    
+    public static void init () {
         lDrive0 = new CANSparkMax(1, MotorType.kBrushless);
         rDrive0 = new CANSparkMax(4, MotorType.kBrushless);
         lDrive1 = new CANSparkMax(2, MotorType.kBrushless);
@@ -31,7 +28,7 @@ public class Drive {
         rDrive1.follow(rDrive0);
     }
 
-    public static void zoom (Joystick driverController) {
+    public static void drive (Joystick driverController) {
         double x = driverController.getRawAxis(0);
         double y = driverController.getRawAxis(1);
         double motorThrottle = (1 + (-driverController.getRawAxis(3))) / 2;
