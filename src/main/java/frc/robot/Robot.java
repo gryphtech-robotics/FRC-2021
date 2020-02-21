@@ -1,5 +1,6 @@
 /**
  * Copyright 2020 Gryphtech Robotics
+ * # axelsgreat
  */
 
 package frc.robot;
@@ -31,9 +32,6 @@ import frc.robot.Systems.Drivetrain;
 import frc.robot.Systems.Intake;
 
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   //motor control
@@ -49,9 +47,6 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     System.out.println("I happen to exist -");
     System.out.println(("Cogito, ergo, sum"));
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
 
     //Launcher
     Launcher.wheelsInit();
@@ -76,15 +71,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    // vam_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+   
   }
 
   @Override
   public void autonomousPeriodic() {
   
-    }
   }
 
   @Override
@@ -92,10 +84,10 @@ public class Robot extends TimedRobot {
 
     Drivetrain.drive(driverController);
 
-    if (driverController.getRawButton(#)) {
+    if (driverController.getRawButton(0)) {
       Intake.in();
     }    
-    if (driverController.getRawButton(#) {
+    if (driverController.getRawButton(1)) {
       Launcher.startLauncher();
     }
     Limelight.periodic();

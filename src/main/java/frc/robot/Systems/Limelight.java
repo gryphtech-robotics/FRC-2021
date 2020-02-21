@@ -8,14 +8,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.lang.Math;
 
+/**
+ * This function controls and monitors limelight inputs and uses trigonometetryssdsdfsdf 
+ */
 public class Limelight {
     public static NetworkTableEntry tx;
     public static NetworkTableEntry ty;
     public static NetworkTableEntry ta;
+    public static NetworkTableEntry tv;
 
     public static double limeX;
     public static double limeY;
     public static double limeArea;
+    public static boolean limeTarget;
 
     // Initialization code
     public static void init () {
@@ -23,6 +28,7 @@ public class Limelight {
         tx = table.getEntry("tx");
         ty = table.getEntry("ty");
         ta = table.getEntry("ta");
+        tv = table.getEntry("tv");
     }
 
     public static void periodic () {
@@ -30,10 +36,12 @@ public class Limelight {
         limeX = tx.getDouble(0.0);
         limeY = ty.getDouble(0.0);
         limeArea = ta.getDouble(0.0);
+        limeTarget = ta.getBoolean(false);
         //post to smart dashboard periodically
         SmartDashboard.putNumber("LimelightX", limeX);
         SmartDashboard.putNumber("LimelightY", limeY);
         SmartDashboard.putNumber("LimelightArea", limeArea);
+        SmartDashboard.putBoolean("Target acquired? ", limeTarget);
    }
 
    public static double math () {
