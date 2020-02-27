@@ -84,10 +84,10 @@ public class Robot extends TimedRobot {
 
     Drivetrain.drive(driverController);
 
-    if (driverController.getRawButton(0)) {
+    if (driverController.getRawButton(7)) {
       Intake.in();
     }    
-    if (driverController.getRawButton(1)) {
+    if (driverController.getRawButton(8)) {
       Launcher.startLauncher();
     }
     Limelight.periodic();
