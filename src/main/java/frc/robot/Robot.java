@@ -6,12 +6,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-//motor control
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 //Driver control
 import edu.wpi.first.wpilibj.Joystick;
@@ -32,36 +26,36 @@ import frc.robot.Systems.Drivetrain;
 import frc.robot.Systems.Intake;
 
 public class Robot extends TimedRobot {
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  //motor control
-  private CANSparkMax lDrive0;
-  private CANSparkMax rDrive0;
-  private CANSparkMax lDrive1;
-  private CANSparkMax rDrive1;
-
-  //Driver Control
+  // Initialize Joysticks
   public Joystick driverController;
+  public Joystick systemsController;
 
   @Override
   public void robotInit() {
     System.out.println("I happen to exist -");
     System.out.println(("Cogito, ergo, sum"));
 
+    // Joysticks
+    driverController = new Joystick(0);
+    systemsController = new Joystick(1);
+
+    
     //Launcher
-    Launcher.wheelsInit();
+    Launcher.init();
 
     //Intake
-    Intake.initIntake();
+    Intake.init();
     
     //motor control
-    Drivetrain.init();
-
-    //Driver control
-    driverController = new Joystick(0);
+    Drivetrain.init(driverController);
 
     //Limelight
     Limelight.init();
+
+    //Driver Camera
+    CameraServer.getInstance().startAutomaticCapture();
+
   }
 
   @Override
@@ -82,12 +76,13 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
-    Drivetrain.drive(driverController);
+    Drivetrain.drive();
 
-    if (driverController.getRawButton(7)) {
+    if (systemsController.getRawButton(7)) {
       Intake.in();
     }    
-    if (driverController.getRawButton(8)) {
+
+    if (systemsController.getRawButton(8)) {
       Launcher.startLauncher();
     }
     Limelight.periodic();

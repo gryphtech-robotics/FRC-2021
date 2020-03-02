@@ -14,8 +14,7 @@ public class Intake {
     /**
      * This function initializes the intake motors.
      */
-    public static void initIntake () {
-        
+    public static void init () {        
         intakeMotors = new CANSparkMax(10, MotorType.kBrushless);
     }
 
@@ -23,7 +22,6 @@ public class Intake {
      * This function reverses the intake motors, effectively "sucking in the balls".
      */
     public static void in () {
-
         intakeMotors.set(-1);
 
         intakeMotors.close();

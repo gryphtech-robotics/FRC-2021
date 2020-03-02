@@ -5,6 +5,8 @@ package frc.robot.Systems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 /**
  * This is the Launcher sub-system of the robot. It controls the ball launcher.
@@ -14,19 +16,17 @@ public class Launcher {
 
     public static CANSparkMax leftThruster;
     public static CANSparkMax rightThruster;
-    public static CANSparkMax leftSideWheel;
-    public static CANSparkMax rightSideWheel;
+    public static VictorSPX SideWheel;
     public static CANSparkMax angleSetter;
 
     /**
      * This function initializes the motors used to drive the robot.
      * To do this it assigns the CANSparkMax motors to the public variables leftThruster, rightThruster, leftSideWheel, rightSideWheel, and angleSetter.
      */
-    public static void wheelsInit () {
+    public static void init () {
         leftThruster = new CANSparkMax(4, MotorType.kBrushless);
         rightThruster = new CANSparkMax(5, MotorType.kBrushless);
-        leftSideWheel = new CANSparkMax(6, MotorType.kBrushless);
-        rightSideWheel = new CANSparkMax(7, MotorType.kBrushless);
+        SideWheel = new VictorSPX(0);
         angleSetter = new CANSparkMax(8, MotorType.kBrushless);
     }
     
@@ -59,9 +59,8 @@ public class Launcher {
      * This function starts the launcher's side wheels, and sets them to 100% speed.
      */
     public static void startSideWheels () {
-
-        leftSideWheel.follow(rightSideWheel);
         
-        rightSideWheel.set(1);
+        SideWheel.set(ControlMode.PercentOutput, 1);
+
     }
 }

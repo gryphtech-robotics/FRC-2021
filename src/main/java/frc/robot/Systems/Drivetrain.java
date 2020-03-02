@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.Joystick;
  * @author Axel Greavette & Sierra Thomson
  */
 public class Drivetrain {
+    public static Joystick driverController;
+
     public static CANSparkMax lDrive0;
     public static CANSparkMax rDrive0;
     public static CANSparkMax lDrive1;
@@ -19,8 +21,11 @@ public class Drivetrain {
     
     /**
      * This function initializes the CANSparkMax motors that control the drivetrain, and assigns them to public variables lDrive0, lDrive1, rDrive0, and rDrive1.
+     * @param {Joystick} controller The Contoller to use for button mapping and axis.
      */
-    public static void init () {
+    public static void init (Joystick controller) {
+        driverController = controller;
+
         lDrive0 = new CANSparkMax(0, MotorType.kBrushless);
         rDrive0 = new CANSparkMax(2, MotorType.kBrushless);
         lDrive1 = new CANSparkMax(1, MotorType.kBrushless);
@@ -37,14 +42,29 @@ public class Drivetrain {
 
     /**
      * This function drives the drivetrain.
-     * @param {Joystick} driverController A joystick to use for button axis and directions.
      */
-    public static void drive (Joystick driverController) {
+    public static void drive () {
         double x = driverController.getRawAxis(0);
         double y = driverController.getRawAxis(1);
         double motorThrottle = (1 + (-driverController.getRawAxis(3))) / 2;
 
         rDrive0.set((y + x) * motorThrottle);
         lDrive0.set(-(y - x) * motorThrottle);
+    }
+
+    /**
+     * This is our autonomous drive code.
+     */
+    public static void auto () {
+        System.out.println("hoo haa auto maa");
+        try {
+            lDrive0.set(-1);
+            rDrive0.set(1);
+            Thread.sleep(5000);
+            lDrive0.set(0);
+            rDrive0.set(0);
+        } catch (InterruptedException err) {
+            Thread.currentThread().interrupt();
+        }
     }
 }
