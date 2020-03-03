@@ -1,3 +1,4 @@
+
 /**
  * Copyright 2020 Gryphtech Robotics
  * # axelsgreat
@@ -75,12 +76,18 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    boolean intakeActive = false;
 
     Drivetrain.drive();
-
-    if (systemsController.getRawButton(7)) {
+    if (systemsController.getRawButton(2)) {
+      intakeActive = !intakeActive;
+    }
+    
+    if (intakeActive == true) {
       Intake.in();
-    }    
+    }  else {
+      Intake.stop();
+    }  
 
     if (systemsController.getRawButton(8)) {
       Launcher.startLauncher();

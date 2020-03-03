@@ -7,6 +7,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 //joystick
 import edu.wpi.first.wpilibj.Joystick;
 
+//math
+import java.lang.Math;
+
 /**
  * This class controls and adds methods to control the drivetrain motors.
  * @author Axel Greavette & Sierra Thomson
@@ -26,9 +29,9 @@ public class Drivetrain {
     public static void init (Joystick controller) {
         driverController = controller;
 
-        lDrive0 = new CANSparkMax(0, MotorType.kBrushless);
+        lDrive0 = new CANSparkMax(1, MotorType.kBrushless);
         rDrive0 = new CANSparkMax(2, MotorType.kBrushless);
-        lDrive1 = new CANSparkMax(1, MotorType.kBrushless);
+        lDrive1 = new CANSparkMax(7, MotorType.kBrushless);
         rDrive1 = new CANSparkMax(3, MotorType.kBrushless);
 
         lDrive0.restoreFactoryDefaults();
@@ -47,9 +50,11 @@ public class Drivetrain {
         double x = driverController.getRawAxis(0);
         double y = driverController.getRawAxis(1);
         double motorThrottle = (1 + (-driverController.getRawAxis(3))) / 2;
-
-        rDrive0.set((y + x) * motorThrottle);
-        lDrive0.set(-(y - x) * motorThrottle);
+        if (Math.abs(x) > .05 && Math.abs(y) > .05){
+            rDrive0.set((y + x) * motorThrottle);
+            lDrive0.set(-(y - x) * motorThrottle);
+        }
+        
     }
 
     /**

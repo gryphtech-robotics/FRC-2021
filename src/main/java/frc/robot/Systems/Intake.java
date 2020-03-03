@@ -15,25 +15,25 @@ public class Intake {
      * This function initializes the intake motors.
      */
     public static void init () {        
-        intakeMotors = new CANSparkMax(10, MotorType.kBrushless);
+        intakeMotors = new CANSparkMax(6, MotorType.kBrushless);
     }
 
     /**
      * This function reverses the intake motors, effectively "sucking in the balls".
      */
     public static void in () {
-        intakeMotors.set(-1);
+        intakeMotors.set(-0.33);
 
-        intakeMotors.close();
+        
     }    
 
     /**
      * This function spins the intake motors, effectively "spitting out the balls".
      */
     public static void out () {
-        intakeMotors.set(1);
+        intakeMotors.set(0.33);
 
-        intakeMotors.close();
+        
     }
 
     /**
