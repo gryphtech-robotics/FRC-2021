@@ -23,8 +23,6 @@ public class Intake {
      */
     public static void in () {
         intakeMotors.set(-0.33);
-
-        
     }    
 
     /**

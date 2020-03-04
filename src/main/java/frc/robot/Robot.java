@@ -26,6 +26,7 @@ import frc.robot.Systems.Drivetrain;
 //intake
 import frc.robot.Systems.Intake;
 
+
 public class Robot extends TimedRobot {
 
   // Initialize Joysticks
@@ -77,21 +78,39 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     boolean intakeActive = false;
+    boolean launcherActive = false;
 
     Drivetrain.drive();
-    if (systemsController.getRawButton(2)) {
-      intakeActive = !intakeActive;
+
+
+    if (systemsController.getRawButton(2) && launcherActive) {
+      launcherActive = false;
+    } else if (systemsController.getRawButton(2) && !launcherActive) {
+      launcherActive = true;
     }
     
-    if (intakeActive == true) {
-      Intake.in();
-    }  else {
-      Intake.stop();
-    }  
-
-    if (systemsController.getRawButton(8)) {
-      Launcher.startLauncher();
+    if (systemsController.getRawButton(3) && intakeActive) {
+      intakeActive = false;
+    } else if (systemsController.getRawButton(3) && !intakeActive) {
+      intakeActive = true;
     }
+
+    if (systemsController.getRawButton(8) && systemsController.getRawButton(1)) {
+      Intake.out();
+    }
+    
+    if (intakeActive) {
+      Intake.in();
+    } else {
+      Intake.stop();
+    }
+
+    if (launcherActive) {
+      Launcher.startLauncher();
+    } else {
+      Launcher.stopLaunch();
+    }
+
     Limelight.periodic();
   }
 

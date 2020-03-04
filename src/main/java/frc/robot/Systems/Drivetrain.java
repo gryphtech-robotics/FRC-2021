@@ -7,8 +7,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 //joystick
 import edu.wpi.first.wpilibj.Joystick;
 
-//math
-import java.lang.Math;
 
 /**
  * This class controls and adds methods to control the drivetrain motors.
@@ -50,10 +48,10 @@ public class Drivetrain {
         double x = driverController.getRawAxis(0);
         double y = driverController.getRawAxis(1);
         double motorThrottle = (1 + (-driverController.getRawAxis(3))) / 2;
-        if (Math.abs(x) > .05 && Math.abs(y) > .05){
+        
             rDrive0.set((y + x) * motorThrottle);
             lDrive0.set(-(y - x) * motorThrottle);
-        }
+        
         
     }
 

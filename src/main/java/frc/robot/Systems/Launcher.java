@@ -8,6 +8,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
+
 /**
  * This is the Launcher sub-system of the robot. It controls the ball launcher.
  * @author Axel Greavette & Sierra Thomson
@@ -19,6 +22,9 @@ public class Launcher {
     public static VictorSPX SideWheel;
     public static CANSparkMax angleSetter;
 
+    public static CANEncoder thrusterEncoder;
+    public static CANPIDController thrusterPID;
+
     /**
      * This function initializes the motors used to drive the robot.
      * To do this it assigns the CANSparkMax motors to the public variables leftThruster, rightThruster, leftSideWheel, rightSideWheel, and angleSetter.
@@ -28,6 +34,9 @@ public class Launcher {
         rightThruster = new CANSparkMax(5, MotorType.kBrushless);
         SideWheel = new VictorSPX(0);
         angleSetter = new CANSparkMax(8, MotorType.kBrushless);
+
+        thrusterEncoder = new CANEncoder(rightThruster);
+        
     }
     
     /**
@@ -61,6 +70,13 @@ public class Launcher {
     public static void startSideWheels () {
         
         SideWheel.set(ControlMode.PercentOutput, 1);
+
+    }
+
+    public static void stopLaunch () {
+        leftThruster.stopMotor();
+        rightThruster.stopMotor();
+        SideWheel.set(ControlMode.PercentOutput, 0);
 
     }
 }
