@@ -83,7 +83,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     
     Drivetrain.drive();
-    
+
     if (systemsController.getRawButton(7)) {
       Intake.in();
     } else {
@@ -107,9 +107,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
-    Launcher.rpmStatus();
+    //Launcher.rpmStatus();
 
-    Launcher.test(driverController);
+    //Launcher.test(driverController);
 
     double speed = driverController.getRawAxis(0);
     Angler.linearActuator(speed);
