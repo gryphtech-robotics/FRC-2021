@@ -26,6 +26,8 @@ import frc.robot.Systems.Drivetrain;
 //intake
 import frc.robot.Systems.Intake;
 
+//Launcher angle
+import frc.robot.Systems.Angler;
 
 public class Robot extends TimedRobot {
 
@@ -42,7 +44,9 @@ public class Robot extends TimedRobot {
     driverController = new Joystick(0);
     systemsController = new Joystick(1);
 
-    
+    //Launcher Angle
+    Angler.init();
+
     //Launcher
     Launcher.init();
 
@@ -77,44 +81,37 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    boolean intakeActive = false;
-    boolean launcherActive = false;
-
+    
     Drivetrain.drive();
-
-
-    if (systemsController.getRawButton(2) && launcherActive) {
-      launcherActive = false;
-    } else if (systemsController.getRawButton(2) && !launcherActive) {
-      launcherActive = true;
-    }
     
-    if (systemsController.getRawButton(3) && intakeActive) {
-      intakeActive = false;
-    } else if (systemsController.getRawButton(3) && !intakeActive) {
-      intakeActive = true;
-    }
-
-    if (systemsController.getRawButton(8) && systemsController.getRawButton(1)) {
-      Intake.out();
-    }
-    
-    if (intakeActive) {
+    if (systemsController.getRawButton(7)) {
       Intake.in();
     } else {
       Intake.stop();
     }
 
-    if (launcherActive) {
-      Launcher.startLauncher();
-    } else {
-      Launcher.stopLaunch();
+    if (systemsController.getRawButton(9) && systemsController.getRawButton(7)) {
+      Intake.out();
     }
-
+    
+    if (systemsController.getRawButton(8)) {
+      Launcher.pid(Limelight.math());
+    } else {
+      Launcher.stopLauncher();
+    }
+    
     Limelight.periodic();
+    
+    Angler.pid(Limelight.math());
   }
 
   @Override
   public void testPeriodic() {
+    Launcher.rpmStatus();
+
+    Launcher.test(driverController);
+
+    double speed = driverController.getRawAxis(0);
+    Angler.linearActuator(speed);
   }
 }

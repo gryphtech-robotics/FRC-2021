@@ -1,15 +1,21 @@
 package frc.robot.Systems;
 
 // Import motors here
-// Todo because idk what we're using atm
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.ControlType;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANPIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.lang.Math;
+
+//joystick
+import edu.wpi.first.wpilibj.Joystick;
 
 /**
  * This is the Launcher sub-system of the robot. It controls the ball launcher.
@@ -17,66 +23,115 @@ import com.revrobotics.CANPIDController;
  */
 public class Launcher {
 
-    public static CANSparkMax leftThruster;
-    public static CANSparkMax rightThruster;
+    public static CANSparkMax botThruster;
+    public static CANSparkMax topThruster;
     public static VictorSPX SideWheel;
     public static CANSparkMax angleSetter;
 
-    public static CANEncoder thrusterEncoder;
-    public static CANPIDController thrusterPID;
+    public static CANEncoder thrusterEncoderTop;
+    public static CANPIDController thrusterPIDTop;
+    public static CANEncoder thrusterEncoderBot;
+    public static CANPIDController thrusterPIDBot;
+    public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
+    public static double setPoint;
+    public static double sP;
 
     /**
      * This function initializes the motors used to drive the robot.
      * To do this it assigns the CANSparkMax motors to the public variables leftThruster, rightThruster, leftSideWheel, rightSideWheel, and angleSetter.
      */
     public static void init () {
-        leftThruster = new CANSparkMax(4, MotorType.kBrushless);
-        rightThruster = new CANSparkMax(5, MotorType.kBrushless);
+        botThruster = new CANSparkMax(5, MotorType.kBrushless);
+        topThruster = new CANSparkMax(4, MotorType.kBrushless);
+        topThruster.setInverted(true);
         SideWheel = new VictorSPX(0);
         angleSetter = new CANSparkMax(8, MotorType.kBrushless);
 
-        thrusterEncoder = new CANEncoder(rightThruster);
-        
+        thrusterPIDTop = topThruster.getPIDController();
+        thrusterPIDBot = botThruster.getPIDController();
+        thrusterEncoderTop = topThruster.getEncoder();
+        thrusterEncoderBot = botThruster.getEncoder();
+
+        kP = 0.0075;
+        kI = 0;
+        kD = 0; 
+        kIz = 0; 
+        kFF = 0.000015; 
+        kMaxOutput = 1; 
+        kMinOutput = -1;
+        maxRPM = 3000;
+
+        thrusterPIDTop.setP(kP);
+        thrusterPIDTop.setI(kI);
+        thrusterPIDTop.setD(kD);
+        thrusterPIDTop.setIZone(kIz);
+        thrusterPIDTop.setFF(kFF);
+        thrusterPIDTop.setOutputRange(kMinOutput, kMaxOutput);
+
+        thrusterPIDBot.setP(kP);
+        thrusterPIDBot.setI(kI);
+        thrusterPIDBot.setD(kD);
+        thrusterPIDBot.setIZone(kIz);
+        thrusterPIDBot.setFF(kFF);
+        thrusterPIDBot.setOutputRange(kMinOutput, kMaxOutput);
     }
     
-    /**
-     * This function sets the wheels in motion. 
-     * To do this it first starts the thruster wheels, waits five (5) seconds, then proceeds to start the side wheels.
-     */
-    public static void startLauncher () {
-        try {
-            startThrusterWheels();
-            Thread.sleep(5000);
-            startSideWheels();
-        } catch (InterruptedException err) {
-            Thread.currentThread().interrupt();
-        }
-        
-    }
 
     /**
      * This function starts the launcher's thruster wheels and sets them to 100% speed.
      */
     public static void startThrusterWheels () {
-
-        leftThruster.follow(rightThruster);
-        
-        rightThruster.set(1);
+        botThruster.set(.5);
+        topThruster.set(.5);
     }
 
     /**
      * This function starts the launcher's side wheels, and sets them to 100% speed.
      */
     public static void startSideWheels () {
-        
         SideWheel.set(ControlMode.PercentOutput, 1);
-
     }
 
-    public static void stopLaunch () {
-        leftThruster.stopMotor();
-        rightThruster.stopMotor();
+    /**
+     * This function stops all wheel motors.
+     */
+    public static void stopLauncher () {
+        botThruster.stopMotor();
+        topThruster.stopMotor();
+
         SideWheel.set(ControlMode.PercentOutput, 0);
-
     }
+
+    /**
+     * This function retrieves the RPM of both thruster motors at any given time.
+     */
+    public static void rpmStatus () {
+        SmartDashboard.putNumber("Top RPM:", topThruster.getEncoder().getVelocity());
+        SmartDashboard.putNumber("Bottom RPM:", botThruster.getEncoder().getVelocity());
+        
+        System.out.println("RAW: " + topThruster.getEncoder().getVelocity());
+        System.out.println("VAR: " + thrusterEncoderTop.getVelocity());
+    }
+
+    /**
+     * This function will simply work.
+     */
+    public static void pid (double distance) {
+        setPoint = Math.sqrt(39647 * Math.pow(distance, 2) + 838939);
+
+        thrusterPIDBot.setReference(setPoint, ControlType.kVelocity);
+        thrusterPIDTop.setReference(setPoint, ControlType.kVelocity);
+    }
+
+    public static void test (Joystick controller) {
+            double set = 2728;
+            double ref = (1 + (-controller.getRawAxis(3))) / 2;
+
+            thrusterPIDBot.setReference(set * ref, ControlType.kVelocity);
+            thrusterPIDTop.setReference(set * ref, ControlType.kVelocity);
+
+            //SideWheel.set(ControlMode.PercentOutput, 0.3);
+    }
+
+    
 }
