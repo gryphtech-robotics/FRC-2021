@@ -45,35 +45,27 @@ public class Launcher {
         topThruster = new CANSparkMax(4, MotorType.kBrushless);
         topThruster.setInverted(true);
         SideWheel = new VictorSPX(0);
-        angleSetter = new CANSparkMax(8, MotorType.kBrushless);
+
+        botThruster.restoreFactoryDefaults();
+        topThruster.restoreFactoryDefaults();
 
         thrusterPIDTop = topThruster.getPIDController();
         thrusterPIDBot = botThruster.getPIDController();
         thrusterEncoderTop = topThruster.getEncoder();
         thrusterEncoderBot = botThruster.getEncoder();
 
-        kP = 0.0075;
-        kI = 0;
-        kD = 0; 
-        kIz = 0; 
-        kFF = 0.000015; 
-        kMaxOutput = 1; 
-        kMinOutput = -1;
-        maxRPM = 3000;
+        topThruster.setOpenLoopRampRate(1);
+        topThruster.setClosedLoopRampRate(1);
+        botThruster.setOpenLoopRampRate(1);
+        botThruster.setClosedLoopRampRate(1);
 
-        thrusterPIDTop.setP(kP);
-        thrusterPIDTop.setI(kI);
-        thrusterPIDTop.setD(kD);
-        thrusterPIDTop.setIZone(kIz);
-        thrusterPIDTop.setFF(kFF);
-        thrusterPIDTop.setOutputRange(kMinOutput, kMaxOutput);
+        thrusterPIDTop.setFeedbackDevice(thrusterEncoderTop);
+        thrusterPIDTop.setFF(0.00001);
+        thrusterPIDTop.setP(0);
 
-        thrusterPIDBot.setP(kP);
-        thrusterPIDBot.setI(kI);
-        thrusterPIDBot.setD(kD);
-        thrusterPIDBot.setIZone(kIz);
-        thrusterPIDBot.setFF(kFF);
-        thrusterPIDBot.setOutputRange(kMinOutput, kMaxOutput);
+        thrusterPIDBot.setFeedbackDevice(thrusterEncoderBot);
+        thrusterPIDBot.setFF(0.00001);
+        thrusterPIDBot.setP(0);
     }
     
 

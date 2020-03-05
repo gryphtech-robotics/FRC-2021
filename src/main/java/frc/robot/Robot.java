@@ -26,8 +26,8 @@ import frc.robot.Systems.Drivetrain;
 //intake
 import frc.robot.Systems.Intake;
 
-//Launcher angle
-import frc.robot.Systems.Angler;
+//climb
+import frc.robot.Systems.Elevator;
 
 public class Robot extends TimedRobot {
 
@@ -44,9 +44,6 @@ public class Robot extends TimedRobot {
     driverController = new Joystick(0);
     systemsController = new Joystick(1);
 
-    //Launcher Angle
-    Angler.init();
-
     //Launcher
     Launcher.init();
 
@@ -61,6 +58,8 @@ public class Robot extends TimedRobot {
 
     //Driver Camera
     CameraServer.getInstance().startAutomaticCapture();
+
+    Elevator.init();
 
   }
 
@@ -101,17 +100,18 @@ public class Robot extends TimedRobot {
     }
     
     Limelight.periodic();
-    
-    Angler.pid(Limelight.math());
-  }
+
+    if (systemsController.getRawButton(1)){
+      Elevator.elevate();
+    }
+    if (systemsController.getRawButton(2)){
+      Elevator.deElevate();
+    }
+
+}
 
   @Override
   public void testPeriodic() {
-    //Launcher.rpmStatus();
-
-    //Launcher.test(driverController);
-
-    double speed = driverController.getRawAxis(0);
-    Angler.linearActuator(speed);
+  
   }
 }
