@@ -43,7 +43,6 @@ public class Launcher {
     public static void init () {
         botThruster = new CANSparkMax(5, MotorType.kBrushless);
         topThruster = new CANSparkMax(4, MotorType.kBrushless);
-        topThruster.setInverted(true);
         SideWheel = new VictorSPX(0);
 
         botThruster.restoreFactoryDefaults();
@@ -60,12 +59,14 @@ public class Launcher {
         botThruster.setClosedLoopRampRate(1);
 
         thrusterPIDTop.setFeedbackDevice(thrusterEncoderTop);
-        thrusterPIDTop.setFF(0.00001);
+        thrusterPIDTop.setFF(0.0002);
         thrusterPIDTop.setP(0);
 
         thrusterPIDBot.setFeedbackDevice(thrusterEncoderBot);
-        thrusterPIDBot.setFF(0.00001);
-        thrusterPIDBot.setP(0);
+        thrusterPIDBot.setFF(0.0002);
+        thrusterPIDBot.setP(0.0001);
+
+        sP = 0;
     }
     
 
@@ -98,31 +99,30 @@ public class Launcher {
      * This function retrieves the RPM of both thruster motors at any given time.
      */
     public static void rpmStatus () {
-        SmartDashboard.putNumber("Top RPM:", topThruster.getEncoder().getVelocity());
-        SmartDashboard.putNumber("Bottom RPM:", botThruster.getEncoder().getVelocity());
+        SmartDashboard.putNumber("calculated top rpm: ", -sP);
+        SmartDashboard.putNumber("calculated bot rpm: ", sP);
+        SmartDashboard.putNumber("actual top rpm:", topThruster.getEncoder().getVelocity());
+        SmartDashboard.putNumber("actual bot rpm:", botThruster.getEncoder().getVelocity());
         
-        System.out.println("RAW: " + topThruster.getEncoder().getVelocity());
-        System.out.println("VAR: " + thrusterEncoderTop.getVelocity());
     }
 
     /**
      * This function will simply work.
      */
-    public static void pid (double distance) {
-        setPoint = Math.sqrt(39647 * Math.pow(distance, 2) + 838939);
+    public static void theRealThing (double distance) {
+        setPoint = (-30.465*distance) + 1661.02;
 
         thrusterPIDBot.setReference(setPoint, ControlType.kVelocity);
         thrusterPIDTop.setReference(setPoint, ControlType.kVelocity);
     }
 
-    public static void test (Joystick controller) {
-            double set = 2728;
-            double ref = (1 + (-controller.getRawAxis(3))) / 2;
+    public static void toGetTestValues () {
+            sP = SmartDashboard.getNumber("calculated bot rpm: ", 1000);
 
-            thrusterPIDBot.setReference(set * ref, ControlType.kVelocity);
-            thrusterPIDTop.setReference(set * ref, ControlType.kVelocity);
+            thrusterPIDBot.setReference(sP, ControlType.kVelocity);
+            thrusterPIDTop.setReference(-sP, ControlType.kVelocity);
 
-            //SideWheel.set(ControlMode.PercentOutput, 0.3);
+            SideWheel.set(ControlMode.PercentOutput, 0.3);    
     }
 
     

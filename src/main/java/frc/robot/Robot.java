@@ -35,6 +35,8 @@ public class Robot extends TimedRobot {
   public Joystick driverController;
   public Joystick systemsController;
 
+  public static boolean go = false;
+
   @Override
   public void robotInit() {
     System.out.println("I happen to exist -");
@@ -93,22 +95,28 @@ public class Robot extends TimedRobot {
       Intake.out();
     }
     
-    if (systemsController.getRawButton(8)) {
-      Launcher.pid(Limelight.math());
+    //True launcher code - comment out while testing
+     if (systemsController.getRawButton(8)) {
+      Launcher.theRealThing(Limelight.math());
     } else {
       Launcher.stopLauncher();
     }
     
+    //Test launcher code - comment out for competition
+    Launcher.toGetTestValues();
+
+    Launcher.rpmStatus();
+    
     Limelight.periodic();
 
-    if (systemsController.getRawButton(1)){
+    /* if (systemsController.getRawButton(1)){
       Elevator.elevate();
     }
     if (systemsController.getRawButton(2)){
       Elevator.deElevate();
     }
-
-}
+    */
+  }
 
   @Override
   public void testPeriodic() {
