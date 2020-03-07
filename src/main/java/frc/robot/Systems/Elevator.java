@@ -3,9 +3,9 @@ package frc.robot.Systems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANPIDController;
-import com.revrobotics.ControlType;
+//import com.revrobotics.CANEncoder;
+//import com.revrobotics.CANPIDController;
+//import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 
 /**
@@ -14,12 +14,12 @@ import edu.wpi.first.wpilibj.smartdashboard.*;
  */
 public class Elevator {
     public static CANSparkMax elevator;
-    public static CANEncoder elevatorEncoder;
+    
 
     public static void init() {
-        elevator = new CANSparkMax(9, MotorType.kBrushless);
+        elevator = new CANSparkMax(9, MotorType.kBrushed);
         elevator.restoreFactoryDefaults();
-        elevatorEncoder = elevator.getEncoder();
+        
     }
 
     //Motor gear ratio = 50:1

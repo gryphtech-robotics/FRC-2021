@@ -10,6 +10,7 @@ import java.lang.Math;
 
 /**
  * This function controls and monitors limelight inputs and uses trigonometetryssdsdfsdf 
+ * @author Sierra Thomson
  */
 public class Limelight {
     public static NetworkTableEntry tx;
@@ -27,16 +28,22 @@ public class Limelight {
     public static double mountAngle = 28;
     public static double distance; 
 
-    // Initialization code
+    /**
+     * This function initializes the Limelight.
+     * To do this it connects to a Network Table instance and addes the entries required.
+     */
     public static void init () {
         NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
         tx = table.getEntry("tx");
         ty = table.getEntry("ty");
         ta = table.getEntry("ta");
         tv = table.getEntry("tv");
-    
     }
 
+    /**
+     * This is the periodic function for the Limelight.
+     * It updates the values needed for the Launcher and displays them.
+     */
     public static void periodic () {
         //read values periodically
         limeX = tx.getDouble(0.0);
@@ -44,16 +51,19 @@ public class Limelight {
         limeArea = ta.getDouble(0.0);
         limeTarget = ta.getBoolean(false);
         //post to smart dashboard periodically
-        SmartDashboard.putNumber("LimelightX", limeX);
-        SmartDashboard.putNumber("LimelightY", limeY);
-        SmartDashboard.putNumber("LimelightArea", limeArea);
+        SmartDashboard.putNumber("LimelightX: ", limeX);
+        SmartDashboard.putNumber("LimelightY: ", limeY);
+        SmartDashboard.putNumber("LimelightArea: ", limeArea);
         SmartDashboard.putBoolean("Target acquired? ", limeTarget);
         
         distance = (targetHeight - cameraHeight) / Math.tan(Math.toRadians(mountAngle) - Math.toRadians(limeY));
 
-        SmartDashboard.putNumber("distance: ", distance);
+        SmartDashboard.putNumber("Distance: ", distance);
    }
 
+   /**
+    * This function returns the distance to the target selcted by the Limelight.
+    */
    public static double math () {
         return distance; 
    }

@@ -72,12 +72,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-   
   }
 
   @Override
   public void autonomousPeriodic() {
-  
+    Drivetrain.auto();
   }
 
   @Override
@@ -85,13 +84,13 @@ public class Robot extends TimedRobot {
     
     Drivetrain.drive();
 
-    if (systemsController.getRawButton(7)) {
+    if (driverController.getRawButton(1)) {
       Intake.in();
     } else {
       Intake.stop();
     }
 
-    if (systemsController.getRawButton(9) && systemsController.getRawButton(7)) {
+    if (systemsController.getRawButton(1) && systemsController.getRawButton(2)) {
       Intake.out();
     }
     
@@ -101,14 +100,22 @@ public class Robot extends TimedRobot {
     } else {
       Launcher.stopLauncher();
     }
+
+    if (systemsController.getRawButton(4)) {
+      Launcher.initiateBallProtector();
+    }
+    if (systemsController.getRawButton(2)){
+      Launcher.pullBackBallProtector();
+    }
     
     //Test launcher code - comment out for competition
-    Launcher.toGetTestValues();
+    //Launcher.toGetTestValues();
 
-    Launcher.rpmStatus();
+    Launcher.rpmStatus(systemsController);
     
     Limelight.periodic();
 
+    //RIP Elevator
     /* if (systemsController.getRawButton(1)){
       Elevator.elevate();
     }

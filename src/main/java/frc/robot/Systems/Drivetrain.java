@@ -51,8 +51,6 @@ public class Drivetrain {
         
             rDrive0.set((y + x) * motorThrottle);
             lDrive0.set(-(y - x) * motorThrottle);
-        
-        
     }
 
     /**
@@ -61,9 +59,9 @@ public class Drivetrain {
     public static void auto () {
         System.out.println("hoo haa auto maa");
         try {
-            lDrive0.set(-1);
-            rDrive0.set(1);
-            Thread.sleep(5000);
+            lDrive0.set(.10);
+            rDrive0.set(-.10);
+            Thread.sleep(10000);
             lDrive0.set(0);
             rDrive0.set(0);
         } catch (InterruptedException err) {
