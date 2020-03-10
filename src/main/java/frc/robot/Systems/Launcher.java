@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 
+import frc.robot.Systems.Drivetrain;
+
 /**
  * This is the Launcher sub-system of the robot. It controls the ball launcher.
  * @author Axel Greavette & Sierra Thomson
@@ -35,19 +37,25 @@ public class Launcher {
     public static CANPIDController protectorPID;
     
     public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
-    public static double setPoint;
+    public static double setPoint = 1580;
     public static double sP;
     
-    public static double rpmOffset;
+    public static double rpmOffset; 
 
+    public static String protectorpos = "not protecting";
+
+    public static double x_val = 0;
+    public static double distanceEquation = 47.3 * (x_val) + 1358;
     /**
      * This function initializes the motors used to drive the robot.
      * To do this it assigns the CANSparkMax motors to the public variables leftThruster, rightThruster, leftSideWheel, rightSideWheel, and angleSetter.
      */
+
+    
     public static void init () {
         botThruster = new CANSparkMax(5, MotorType.kBrushless);
         topThruster = new CANSparkMax(4, MotorType.kBrushless);
-        ballProtector = new CANSparkMax(13, MotorType.kBrushless);
+        ballProtector = new CANSparkMax(13, MotorType.kBrushed);
 
         SideWheel = new VictorSPX(0);
 
@@ -84,9 +92,17 @@ public class Launcher {
         
         rpmOffset = 0;
         
-        // initiateBallProtector();
     }
     
+    public static void auto() {
+        initiateBallProtector();
+        theRealThing(3.048);
+        Timer.delay(2);
+        pullBackBallProtector();
+        Timer.delay(5);
+        Drivetrain.auto();
+
+    }
 
     /**
      * This function starts the launcher's thruster wheels and sets them to 100% speed.
@@ -100,7 +116,7 @@ public class Launcher {
      * This function starts the launcher's side wheels, and sets them to 100% speed.
      */
     public static void startSideWheels () {
-        SideWheel.set(ControlMode.PercentOutput, 1);
+        SideWheel.set(ControlMode.PercentOutput, .5);
     }
 
     /**
@@ -123,8 +139,8 @@ public class Launcher {
      * This function retrieves the RPM of both thruster motors at any given time.
      */
     public static void rpmStatus (Joystick controller) {
-        SmartDashboard.putNumber("Calculated top rpm: ", -sP);
-        SmartDashboard.putNumber("Calculated bot rpm: ", sP);
+        //SmartDashboard.putNumber("Calculated top rpm: ", -sP);
+       // SmartDashboard.putNumber("Calculated bot rpm: ", sP);
         SmartDashboard.putNumber("Actual top rpm:", topThruster.getEncoder().getVelocity());
         SmartDashboard.putNumber("Actual bot rpm:", botThruster.getEncoder().getVelocity());
         //SmartDashboard.putNumber("Ball Protector Position: ", ballProtector.getEncoder().getPosition());
@@ -136,17 +152,19 @@ public class Launcher {
         if (controller.getRawButton(6)){
             rpmOffset -= 20;
         }
+        SmartDashboard.putNumber("LOOK AT THIS AXEL: ", (setPoint + rpmOffset) );
+        SmartDashboard.putString("protector pos: ", protectorpos);
     }
 
     /**
      * This function will simply work.
      */
     public static void theRealThing (double distance) {
-        //setPoint = (-30.465 * distance) + 1661.02;
-        setPoint = 1575;
+        x_val = distance;
+        
         startSideWheels();
-        thrusterPIDBot.setReference(setPoint + rpmOffset, ControlType.kVelocity);
-        thrusterPIDTop.setReference(-(setPoint + rpmOffset), ControlType.kVelocity);
+        thrusterPIDBot.setReference(distanceEquation + rpmOffset, ControlType.kVelocity);
+        thrusterPIDTop.setReference(-(distanceEquation + rpmOffset), ControlType.kVelocity);
     }
 
     /**
@@ -163,11 +181,15 @@ public class Launcher {
         ballProtector.set(1);
         Timer.delay(.2);
         ballProtector.set(0);
+
+        protectorpos = "protecting";
     }
 
     public static void pullBackBallProtector () {
         ballProtector.set(-1);
         Timer.delay(.2);
         ballProtector.set(0);
+
+        protectorpos = "not protecting";
     }
 }

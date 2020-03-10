@@ -76,7 +76,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    Drivetrain.auto();
+    Launcher.auto();
   }
 
   @Override
@@ -113,16 +113,19 @@ public class Robot extends TimedRobot {
 
     Launcher.rpmStatus(systemsController);
     
-    Limelight.periodic();
+    //Limelight.periodic();
 
-    //RIP Elevator
-    /* if (systemsController.getRawButton(1)){
+     if (driverController.getRawButton(3)){
       Elevator.elevate();
     }
-    if (systemsController.getRawButton(2)){
+
+    if (driverController.getRawButton(4)){
       Elevator.deElevate();
     }
-    */
+    
+    if (driverController.getRawButton(6)){
+      Elevator.stopElevator();
+    }
   }
 
   @Override

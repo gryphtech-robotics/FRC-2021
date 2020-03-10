@@ -22,14 +22,14 @@ public class Intake {
      * This function reverses the intake motors, effectively "sucking in the balls".
      */
     public static void in () {
-        intakeMotors.set(-0.33);
+        intakeMotors.set(-0.5);
     }    
 
     /**
      * This function spins the intake motors, effectively "spitting out the balls".
      */
     public static void out () {
-        intakeMotors.set(0.33);
+        intakeMotors.set(0.5);
 
         
     }
