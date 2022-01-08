@@ -46,13 +46,18 @@ public class Launcher {
 
     public static double x_val = 0;
     public static double distanceEquation = 47.3 * (x_val) + 1358;
+
     /**
      * This function initializes the motors used to drive the robot.
      * To do this it assigns the CANSparkMax motors to the public variables leftThruster, rightThruster, leftSideWheel, rightSideWheel, and angleSetter.
      */
-
-    
     public static void init () {
+        /*SmartDashboard.putString("Raise Ball Stopper", "Y");
+        SmartDashboard.putString("Lower Ball Stopper", "A");
+        SmartDashboard.putString("Raise Shooter RPM", "Left Bumper");
+        SmartDashboard.putString("Lower Shooter RPM", "Right Bumper");
+        SmartDashboard.putString("Shoot", "Right Trigger");*/
+
         botThruster = new CANSparkMax(5, MotorType.kBrushless);
         topThruster = new CANSparkMax(4, MotorType.kBrushless);
         ballProtector = new CANSparkMax(13, MotorType.kBrushed);
@@ -108,8 +113,8 @@ public class Launcher {
      * This function starts the launcher's thruster wheels and sets them to 100% speed.
      */
     public static void startThrusterWheels () {
-        botThruster.set(.5);
-        topThruster.set(.5);
+        botThruster.set(1);
+        topThruster.set(-1);
     }
 
     /**
@@ -152,8 +157,9 @@ public class Launcher {
         if (controller.getRawButton(6)){
             rpmOffset -= 20;
         }
-        SmartDashboard.putNumber("LOOK AT THIS AXEL: ", (setPoint + rpmOffset) );
-        SmartDashboard.putString("protector pos: ", protectorpos);
+
+        SmartDashboard.putNumber("setPos + rpmOffset: ", (setPoint + rpmOffset));
+        SmartDashboard.putString("Protector pos: ", protectorpos);
     }
 
     /**

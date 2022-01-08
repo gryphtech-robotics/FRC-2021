@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Joystick;
 
 //camera
+
 import edu.wpi.first.cameraserver.CameraServer;
 
 //launcher
@@ -40,7 +41,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     System.out.println("I happen to exist -");
-    System.out.println(("Cogito, ergo, sum"));
+    System.out.println(("Cogito, ergo sum"));
 
     // Joysticks
     driverController = new Joystick(0);
@@ -90,7 +91,7 @@ public class Robot extends TimedRobot {
       Intake.stop();
     }
 
-    if (systemsController.getRawButton(1) && systemsController.getRawButton(2)) {
+    if (driverController.getRawButton(1) && driverController.getRawButton(2)) {
       Intake.out();
     }
     
@@ -108,12 +109,18 @@ public class Robot extends TimedRobot {
       Launcher.pullBackBallProtector();
     }
     
+    if (systemsController.getRawButtonPressed(3)){
+      Launcher.pullBackBallProtector();
+    } else if (systemsController.getRawButtonReleased(3)) {
+      Launcher.initiateBallProtector();
+    }
+    
     //Test launcher code - comment out for competition
     //Launcher.toGetTestValues();
 
     Launcher.rpmStatus(systemsController);
     
-    //Limelight.periodic();
+    Limelight.periodic();
 
      if (driverController.getRawButton(3)){
       Elevator.elevate();
@@ -126,7 +133,15 @@ public class Robot extends TimedRobot {
     if (driverController.getRawButton(6)){
       Elevator.stopElevator();
     }
-  }
+/*
+    if (systemsController.getRawButton(5)){
+      Launcher.startSideWheels();
+      Launcher.startThrusterWheels();
+    }else{
+      Launcher.stopSideWheels();
+      Launcher.stopLauncher();
+    } */
+  } 
 
   @Override
   public void testPeriodic() {

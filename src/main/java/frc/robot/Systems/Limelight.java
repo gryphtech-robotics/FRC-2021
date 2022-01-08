@@ -38,6 +38,7 @@ public class Limelight {
         ty = table.getEntry("ty");
         ta = table.getEntry("ta");
         tv = table.getEntry("tv");
+        table.getEntry("ledMode").setNumber(3);
     }
 
     /**
